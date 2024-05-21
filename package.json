@@ -1,5 +1,5 @@
 {
-  "name": "openpay-react-native",
+  "name": "@alxsmora1/openpay-react-native",
   "version": "2.0.10",
   "description": "Openpay library",
   "main": "lib/commonjs/index",
