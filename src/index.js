@@ -80,7 +80,7 @@ export class Openpay extends Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.createDeviceSessionId();
     }
 
@@ -156,21 +156,22 @@ export class Openpay extends Component {
         return true;
     };
 
-    createDeviceSessionId = () => {
-        let identifierForVendor = this.identifierForVendor();
-        identifierForVendor = identifierForVendor.replace(/-/g, '');
+    createDeviceSessionId = async () => {
+        let identifierForVendor = await this.identifierForVendor() || "testing this";
+      console.log("identifierForVendor",identifierForVendor)
+      identifierForVendor = identifierForVendor.replace(/-/g, '');
 
-        const uri = vsprintf('%s/oa/logo.htm?m=%s&s=%s', [
-            this.props.isProductionMode ? API_URL_PRODUCTION : API_URL_SANDBOX,
-            this.props.merchantId,
-            sessionId,
-        ]);
-        const injectedJavaScript = vsprintf('var identifierForVendor = "%s";', [
-            identifierForVendor,
-        ]);
+      const uri = vsprintf('%s/oa/logo.htm?m=%s&s=%s', [
+          this.props.isProductionMode ? API_URL_PRODUCTION : API_URL_SANDBOX,
+          this.props.merchantId,
+          sessionId,
+      ]);
+      const injectedJavaScript = vsprintf('var identifierForVendor = "%s";', [
+          identifierForVendor,
+      ]);
 
-        this.setState(() => ({uri, injectedJavaScript}));
-        this.props.deviceSession(sessionId);
+      this.setState(() => ({uri, injectedJavaScript}));
+      this.props.deviceSession(sessionId);
     };
 
     identifierForVendor = () => {
